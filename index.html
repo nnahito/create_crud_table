@@ -6,129 +6,133 @@
     <meta charset="UTF-8">
 
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 
-    <style>
-    table{
-        border: 1px solid #757575;
-    }
-    table th{
-        border: 1px solid #bdbdbd;
-    }
-    table td{
-        padding: 5px;
-        border: 1px solid #bdbdbd;
-        text-align: center;
-    }
-    </style>
 
 
 </head>
 
 <body>
 
-    <br>
-    <br>
+    <div class="container">
+
+        <div class="row">
+            <div class="col s8 offset-s2 input-field">
+                <label for="table-name">テーブル名</label>
+                <input id="table-name" type="text" class="table-name sql_parts">
+            </div>
 
 
-    テーブル名：<input type="text" class="table-name sql_parts">
+            <div class="col s12 input-field center-align">
+                <button id="add_button" class="waves-effect waves-light btn"><i class="material-icons left">add</i>行を増やすボタン</button>
+                <button id="remove_button" class="waves-effect waves-light btn"><i class="material-icons left">remove</i>行が減るボタン</button>
+            </div>
 
-    <br>
-    <br>
-    <br>
-
-    <button id="add_button">行を増やすボタン</button>
-    <button id="remove_button">行が減るボタン</button>
-
-    <br>
-    <br>
+        </div>
+    </div>
 
 
-    <table>
-        <thead>
-            <tr>
-                <th>No.</th>
-                <th>項目名</th>
-                <th>論理名</th>
-                <th>型</th>
-                <th>長さ</th>
-                <th>少数</th>
-                <th>自動増加</th>
-                <th>符号なし</th>
-                <th>ゼロ埋め</th>
-                <th>初期値</th>
-                <th>必須</th>
-                <th>INDEX</th>
-                <th>主キー</th>
-                <th>備考</th>
-            </tr>
-        </thead>
 
-        <tbody id="crud">
+    <div class="row">
+        <div class="col s10 offset-s1">
+            <table class="bordered striped responsive-table centered">
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>項目名</th>
+                        <th>論理名</th>
+                        <th>型</th>
+                        <th>長さ</th>
+                        <th>少数</th>
+                        <th>自動増加</th>
+                        <th>符号なし</th>
+                        <th>ゼロ埋め</th>
+                        <th>初期値</th>
+                        <th>必須</th>
+                        <th>INDEX</th>
+                        <th>主キー</th>
+                        <th>備考</th>
+                    </tr>
+                </thead>
 
-            <tr>
-                <td>1</td>
+                <tbody id="crud">
 
-                <td>
-                    <input type="text" placeholder="項目名" class="sql_parts">
-                </td>
+                    <tr>
+                        <td>1</td>
 
-                <td>
-                    <input type="text" placeholder="論理名" class="sql_parts">
-                </td>
+                        <td>
+                            <input type="text" placeholder="項目名" class="sql_parts">
+                        </td>
 
-                <td>
-                    <input type="text" placeholder="型" class="sql_parts">
-                </td>
+                        <td>
+                            <input type="text" placeholder="論理名" class="sql_parts">
+                        </td>
 
-                <td>
-                    <input type="text" placeholder="長さ" class="sql_parts">
-                </td>
+                        <td>
+                            <input type="text" placeholder="型" class="sql_parts">
+                        </td>
 
-                <td>
-                    <input type="text" placeholder="少数" class="sql_parts">
-                </td>
+                        <td>
+                            <input type="text" placeholder="長さ" class="sql_parts">
+                        </td>
 
-                <td>
-                    <input type="checkbox" value="AUTO_INCREMENT" class="sql_parts">
-                </td>
+                        <td>
+                            <input type="text" placeholder="少数" class="sql_parts">
+                        </td>
 
-                <td>
-                    <input type="checkbox" value="UNSIGNED" class="sql_parts">
-                </td>
+                        <td>
+                            <input id="a_t" type="checkbox" value="AUTO_INCREMENT" class="sql_parts">
+                            <label for="a_t"></label>
+                        </td>
 
-                <td>
-                    <input type="checkbox" value="ZEROFILL" class="sql_parts">
-                </td>
+                        <td>
+                            <input id="UNSIGNED" type="checkbox" value="UNSIGNED" class="sql_parts">
+                            <label for="UNSIGNED"></label>
+                        </td>
 
-                <td>
-                    <input type="text" placeholder="デフォルト" class="sql_parts">
-                </td>
+                        <td>
+                            <input id="ZEROFILL" type="checkbox" value="ZEROFILL" class="sql_parts">
+                            <label for="ZEROFILL"></label>
+                        </td>
 
-                <td>
-                    <input type="checkbox" value="NOT NULL" class="sql_parts">
-                </td>
+                        <td>
+                            <input type="text" placeholder="デフォルト" class="sql_parts">
+                        </td>
 
-                <td>
-                    <input type="checkbox" value="INDEX" class="sql_parts">
-                </td>
+                        <td>
+                            <input id="NOT-NULL" type="checkbox" value="NOT NULL" class="sql_parts">
+                            <label for="NOT-NULL"></label>
+                        </td>
 
-                <td>
-                    <input type="checkbox" value="PRIMARY KEY" class="sql_parts">
-                </td>
+                        <td>
+                            <input id="INDEX" type="checkbox" value="INDEX" class="sql_parts">
+                            <label for="INDEX"></label>
+                        </td>
 
-                <td>
-                    <input type="text" placeholder="備考" class="sql_parts">
-                </td>
-            </tr>
-        </tbody>
+                        <td>
+                            <input id="PRIMARY-KEY" type="checkbox" value="PRIMARY KEY" class="sql_parts">
+                            <label for="PRIMARY-KEY"></label>
+                        </td>
 
-    </table>
+                        <td>
+                            <input type="text" placeholder="備考" class="sql_parts">
+                        </td>
+                    </tr>
+                </tbody>
 
-    <br>
-    <br>
+            </table>
+        </div>
 
-    <textarea id="sql"></textarea>
+        <div class="input-field col s8 offset-s2">
+            <textarea id="sql" class="materialize-textarea"></textarea>
+            <label for="sql">SQL出力結果</label>
+        </div>
+
+    </div>
+
 
 
 
@@ -152,7 +156,28 @@
             if ( i === 0 ) {
                 $('#crud tr:last').append('<td>' + (rows_num + 1) + '</td>');
             } else {
-                $('#crud tr:last').append('<td>' + cell.html() + '</td>');
+                // コピーした行が、checkboxか、input_textか
+                if ( cell.find('input').attr('type') === 'checkbox' ){
+                    // checkboxなら、idに番号を追加する処理をする
+                    let id_name = cell.find('input').attr('id');
+
+                    // コピー元のデータを持っておく
+                    let orign_id = cell.find('input').attr('id');
+                    let orign_for = cell.find('label').attr('for');
+
+                    // コピー先のデータを書き換えて出力
+                    cell.find('input').attr('id', id_name + rows_num);
+                    cell.find('label').attr('for', id_name + rows_num);
+                    $('#crud tr:last').append('<td>' + cell.html() + '</td>');
+
+                    // コピー元の情報を元に戻す
+                    cell.find('input').attr('id', orign_id);
+                    cell.find('label').attr('for', orign_for);
+
+                } else {
+                    // それ以外ならそのまま
+                    $('#crud tr:last').append('<td>' + cell.html() + '</td>');
+                }
             }
 
         }
@@ -175,7 +200,6 @@
 
         // tableの行数を取得
         let rows = $('#crud tr');
-
         // 各行分ループする
         for (var i = 0; i < rows.length; i++) {
             // その行のすべてのセルを取得
@@ -217,8 +241,13 @@
             sql += '`' + arr[1] + '` ';
 
             // 型と長さ
-            if ( arr[2] !== '' && arr[3] !== '' )
-            sql += arr[2] + '(' + arr[3] + ')' + ' ';
+            if ( arr[2] !== '' && arr[3] !== '' ) {
+                sql += arr[2] + '(' + arr[3] + ')' + ' ';
+            } else if ( arr[2] !== '' ) {
+                sql += arr[2] + ' ';
+            }
+
+
 
             // 符号なし
             if ( arr[6] !== '' ) {
@@ -267,7 +296,8 @@
         sql += '\n);';
 
         // textareaに出力
-        $('#sql').text(sql);
+        $('#sql').val(sql);
+        $('#sql').trigger('autoresize');
 
     });
 
