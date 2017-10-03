@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <title></title>
+    <meta charset="UTF-8">
+
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+
+
+    <style>
+    table{
+        border: 1px solid #757575;
+    }
+    table th{
+        border: 1px solid #bdbdbd;
+    }
+    table td{
+        padding: 5px;
+        border: 1px solid #bdbdbd;
+        text-align: center;
+    }
+    </style>
+
+
+</head>
+
+<body>
+
+    <br>
+    <br>
+
+
+    テーブル名：<input type="text" class="table-name sql_parts">
+
+    <br>
+    <br>
+    <br>
+
+    <button id="add_button">行を増やすボタン</button>
+    <button id="remove_button">行が減るボタン</button>
+
+    <br>
+    <br>
+
+
+    <table>
+        <thead>
+            <tr>
+                <th>No.</th>
+                <th>項目名</th>
+                <th>論理名</th>
+                <th>型</th>
+                <th>長さ</th>
+                <th>少数</th>
+                <th>自動増加</th>
+                <th>符号なし</th>
+                <th>ゼロ埋め</th>
+                <th>初期値</th>
+                <th>必須</th>
+                <th>INDEX</th>
+                <th>主キー</th>
+                <th>備考</th>
+            </tr>
+        </thead>
+
+        <tbody id="crud">
+
+            <tr>
+                <td>1</td>
+
+                <td>
+                    <input type="text" placeholder="項目名" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="text" placeholder="論理名" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="text" placeholder="型" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="text" placeholder="長さ" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="text" placeholder="少数" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="checkbox" value="AUTO_INCREMENT" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="checkbox" value="UNSIGNED" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="checkbox" value="ZEROFILL" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="text" placeholder="デフォルト" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="checkbox" value="NOT NULL" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="checkbox" value="INDEX" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="checkbox" value="PRIMARY KEY" class="sql_parts">
+                </td>
+
+                <td>
+                    <input type="text" placeholder="備考" class="sql_parts">
+                </td>
+            </tr>
+        </tbody>
+
+    </table>
+
+    <br>
+    <br>
+
+    <textarea id="sql"></textarea>
+
+
+
+    <script>
+
+    // 行の追加
+    $('#add_button').on('click', function(){
+
+        // 現在の行数を取得
+        let rows_num = $('#crud tr').length;
+
+        // tbodyにtrを追加
+        $('#crud').append('<tr>' + '</tr>');
+
+        // テーブルの最初の行のセルをコピーして、追加していく
+        let cells = $('#crud tr:first td');
+        for( var i = 0; i < cells.length; i++) {
+            // 要素を取得
+            let cell = cells.eq(i);
+
+            if ( i === 0 ) {
+                $('#crud tr:last').append('<td>' + (rows_num + 1) + '</td>');
+            } else {
+                $('#crud tr:last').append('<td>' + cell.html() + '</td>');
+            }
+
+        }
+
+    });
+
+
+    // 行の削除
+    $('#remove_button').on('click', function(){
+        if( $('#crud tr').length > 1 ) {
+            $('#crud tr:last').remove();
+        }
+    });
+
+
+    $(document).on('change', '.sql_parts', function(){
+
+        // SQLの基盤
+        let sql = 'CREATE TABLE `' + $('.table-name').val() + '` (';
+
+        // tableの行数を取得
+        let rows = $('#crud tr');
+
+        // 各行分ループする
+        for (var i = 0; i < rows.length; i++) {
+            // その行のすべてのセルを取得
+            let cells = rows.eq(i).children();
+
+            // 要素を振り分けるための配列を定義
+            let arr = [];
+
+            // tdの個数だけループする
+            for (var j = 0; j < cells.length; j++) {
+                // 要素を取得
+                let cell = cells.eq(j).find('.sql_parts');
+
+                // checkboxか、inputで格納する方式を変える
+                if ( $(cell).attr('type') === 'text' ) {
+                    // inputの場合
+                    arr.push( $(cell).val() );
+                } else if ( $(cell).attr('type') === 'checkbox' ) {
+                    // checkboxの場合
+                    if ( $(cell).prop('checked') ) {
+                        // チェックされていれば、値を取得
+                        arr.push( $(cell).val() );
+                    } else {
+                        // チェックされていなければ空文字を入れる
+                        arr.push( '' );
+                    }
+                }
+
+            }
+
+            // もし、ループが2回目以降であれば、カンマを入れる
+            if ( i >= 1 ) {
+                sql += '\n,  ';
+            } else {
+                sql += '\n  ';
+            }
+
+            // 論理名
+            sql += '`' + arr[1] + '` ';
+
+            // 型と長さ
+            if ( arr[2] !== '' && arr[3] !== '' )
+            sql += arr[2] + '(' + arr[3] + ')' + ' ';
+
+            // 符号なし
+            if ( arr[6] !== '' ) {
+                sql += arr[6] + ' ';
+            }
+
+            // ゼロ埋め
+            if ( arr[7] !== '' ) {
+                sql += arr[7] + ' ';
+            }
+
+            // 必須
+            if ( arr[9] !== '' ) {
+                sql += arr[9] + ' ';
+            }
+
+            // 初期値
+            if ( arr[8] !== '' ) {
+                sql += 'DEFAULT \'' + arr[8] + '\' ';
+            }
+
+            // 自動増加
+            if ( arr[5] !== '' ) {
+                sql += arr[5] + ' ';
+            }
+
+            // 主キー
+            if ( arr[11] !== '' ) {
+                sql += arr[11] + ' ';
+            }
+
+            // 備考
+            if ( arr[12] !== '' ) {
+                sql += 'COMMENT \'' + arr[12] + '\' ';
+            }
+
+            // INDEX
+            if ( arr[10] !== '' ) {
+                sql += ', INDEX(' + arr[1] + ')';
+            }
+
+        }
+
+
+        // SQLの終わり
+        sql += '\n);';
+
+        // textareaに出力
+        $('#sql').text(sql);
+
+    });
+
+
+    </script>
+
+
+</body>
+</html>
