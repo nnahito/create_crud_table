@@ -1,5 +1,5 @@
 # テーブル定義書とか作れそうなやつ
-デモ：https://tsumari.zapto.org/crud/
+デモページ：https://tsumari.zapto.org/crud/
 
 
 # 使い方
