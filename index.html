@@ -8,9 +8,9 @@
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
 
 
 </head>
@@ -20,6 +20,7 @@
     <div class="container">
 
         <div class="row">
+
             <div class="col s8 offset-s2 input-field">
                 <label for="table-name">テーブル名</label>
                 <input id="table-name" type="text" class="table-name sql_parts">
@@ -46,7 +47,6 @@
                         <th>論理名</th>
                         <th>型</th>
                         <th>長さ</th>
-                        <th>少数</th>
                         <th>自動増加</th>
                         <th>符号なし</th>
                         <th>ゼロ埋め</th>
@@ -77,10 +77,6 @@
 
                         <td>
                             <input type="text" placeholder="長さ" class="sql_parts">
-                        </td>
-
-                        <td>
-                            <input type="text" placeholder="少数" class="sql_parts">
                         </td>
 
                         <td>
@@ -127,19 +123,17 @@
         </div>
 
         <div class="input-field col s8 offset-s2">
-            <textarea id="sql" class="materialize-textarea"></textarea>
+            <textarea id="sql" class="materialize-textarea" placeholder="SQL出力結果"></textarea>
             <label for="sql">SQL出力結果</label>
         </div>
 
     </div>
 
-
-
-
     <script>
 
+
     // 行の追加
-    $('#add_button').on('click', function(){
+    $('#add_button').on('click', function() {
 
         // 現在の行数を取得
         let rows_num = $('#crud tr').length;
@@ -193,6 +187,7 @@
     });
 
 
+    // 値が変更したらSQL文を作成
     $(document).on('change', '.sql_parts', function(){
 
         // SQLの基盤
@@ -247,45 +242,47 @@
                 sql += arr[2] + ' ';
             }
 
-
-
             // 符号なし
-            if ( arr[6] !== '' ) {
-                sql += arr[6] + ' ';
-            }
-
-            // ゼロ埋め
-            if ( arr[7] !== '' ) {
-                sql += arr[7] + ' ';
-            }
-
-            // 必須
-            if ( arr[9] !== '' ) {
-                sql += arr[9] + ' ';
-            }
-
-            // 初期値
-            if ( arr[8] !== '' ) {
-                sql += 'DEFAULT \'' + arr[8] + '\' ';
-            }
-
-            // 自動増加
             if ( arr[5] !== '' ) {
                 sql += arr[5] + ' ';
             }
 
+            // ゼロ埋め
+            if ( arr[6] !== '' ) {
+                sql += arr[6] + ' ';
+            }
+
+            // 必須
+            if ( arr[8] !== '' ) {
+                sql += arr[8] + ' ';
+            }
+
+            // 初期値
+            if ( arr[7] !== '' ) {
+                sql += 'DEFAULT \'' + arr[7] + '\' ';
+            }
+
             // 主キー
-            if ( arr[11] !== '' ) {
-                sql += arr[11] + ' ';
+            if ( arr[10] !== '' ) {
+                sql += arr[10] + ' ';
+            }
+
+            // 自動増加（A_I）
+            if ( arr[4] !== '' ) {
+                sql += arr[4] + ' ';
             }
 
             // 備考
-            if ( arr[12] !== '' ) {
-                sql += 'COMMENT \'' + arr[12] + '\' ';
+            if ( arr[0] !== '' || arr[11] !== '' ) {
+                if ( arr[11] !== '' ) {
+                    sql += 'COMMENT \'' + arr[0] + '(' + arr[11] + ')' + '\' ';
+                } else {
+                    sql += 'COMMENT \'' + arr[0] + '\' ';
+                }
             }
 
             // INDEX
-            if ( arr[10] !== '' ) {
+            if ( arr[9] !== '' ) {
                 sql += ', INDEX(' + arr[1] + ')';
             }
 
@@ -301,7 +298,7 @@
 
     });
 
-
+    
     </script>
 
 
